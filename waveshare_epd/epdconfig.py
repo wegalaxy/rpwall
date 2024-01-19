@@ -34,7 +34,6 @@ import os
 import logging
 import sys
 import time
-import subprocess
 
 logger = logging.getLogger(__name__)
 
@@ -264,9 +263,9 @@ class SunriseX3:
 
 
 if sys.version_info[0] == 2:
-    process = subprocess.Popen("cat /proc/cpuinfo | grep Raspberry", shell=True, stdout=subprocess.PIPE)
+    process = os.system.Popen("cat /proc/cpuinfo | grep Raspberry", shell=True, stdout=os.system.PIPE)
 else:
-    process = subprocess.Popen("cat /proc/cpuinfo | grep Raspberry", shell=True, stdout=subprocess.PIPE, text=True)
+    process = os.system.Popen("cat /proc/cpuinfo | grep Raspberry", shell=True, stdout=os.system.PIPE, text=True)
 output, _ = process.communicate()
 if sys.version_info[0] == 2:
     output = output.decode(sys.stdout.encoding)

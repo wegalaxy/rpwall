@@ -7,6 +7,7 @@
 # * | This version:   V1.2
 # * | Date        :   2022-10-29
 # * | Info        :
+# * | Reference: https://github.com/waveshareteam/e-Paper/blob/master/RaspberryPi_JetsonNano/python/lib/waveshare_epd/epdconfig.py
 # ******************************************************************************
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documnetation files (the "Software"), to deal
@@ -27,13 +28,11 @@
 # THE SOFTWARE.
 #
 
-# Reference:
-# https://github.com/waveshareteam/e-Paper/blob/master/RaspberryPi_JetsonNano/python/lib/waveshare_epd/epdconfig.py
-
 import os
 import logging
 import sys
 import time
+import subprocess
 
 logger = logging.getLogger(__name__)
 
@@ -263,9 +262,9 @@ class SunriseX3:
 
 
 if sys.version_info[0] == 2:
-    process = os.system.Popen("cat /proc/cpuinfo | grep Raspberry", shell=True, stdout=os.system.PIPE)
+    process = subprocess.Popen("cat /proc/cpuinfo | grep Raspberry", shell=True, stdout=subprocess.PIPE)
 else:
-    process = os.system.Popen("cat /proc/cpuinfo | grep Raspberry", shell=True, stdout=os.system.PIPE, text=True)
+    process = subprocess.Popen("cat /proc/cpuinfo | grep Raspberry", shell=True, stdout=subprocess.PIPE, text=True)
 output, _ = process.communicate()
 if sys.version_info[0] == 2:
     output = output.decode(sys.stdout.encoding)

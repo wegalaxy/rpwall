@@ -7,6 +7,7 @@
 # * | This version:   V1.0
 # * | Date        :   2022-10-20
 # # | Info        :   python demo
+# * | Reference : https://github.com/waveshareteam/e-Paper/blob/master/RaspberryPi_JetsonNano/python/lib/waveshare_epd/epd7in3f.py
 # -----------------------------------------------------------------------------
 # ******************************************************************************/
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,9 +28,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-
-# Reference:
-# https://github.com/waveshareteam/e-Paper/blob/master/RaspberryPi_JetsonNano/python/lib/waveshare_epd/epd7in3f.py
 
 import logging
 from . import epdconfig

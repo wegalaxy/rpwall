@@ -12,6 +12,7 @@ import traceback
 logging.basicConfig(level=logging.DEBUG)
 
 epd = epd7in3f.EPD()
+epd.init()
 
 
 def load_image(imagePath):

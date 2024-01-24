@@ -1,15 +1,11 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
-import sys
-import os
 
 import logging
-from waveshare_epd import epd7in3f
-import time
+from display.waveshare_epd import epd7in3f
 from PIL import Image
-import traceback
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 epd = epd7in3f.EPD()
 epd.init()

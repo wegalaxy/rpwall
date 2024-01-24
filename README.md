@@ -11,8 +11,12 @@ sudo ./install.sh
 sudo reboot
 ```
 
+####
+pip install RPi.GPIO
+pip install gpiozero
 
 #### Run Demo
 ```
 python3 main.py
 ```
+

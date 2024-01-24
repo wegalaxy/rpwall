@@ -14,9 +14,6 @@ ssl_context.load_verify_locations(certifi.where())
 
 load_dotenv()
 
-picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'img')
-fontdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'font')
-
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
@@ -29,10 +26,8 @@ def get_monitor_addresses():
 
 async def load_image(mc):
     try:
-        imagePath = os.path.join(picdir, 'framebg.jpg')
-        logging.info("Loading Image @ %s", imagePath)
-        fontPath = os.path.join(fontdir, 'SourceSans3-Regular.ttf')
-        logging.info("Loading Font @ %s", fontPath)
+        imagePath = os.path.join(os.environ["IMG_DIR"], 'framebg.jpg')
+        fontPath = os.path.join(os.environ["FONT_DIR"], 'SourceSans3-Regular.ttf')
         from display import eink_load
         while True:
             eink_load.load_leaderboard(mc.getAddressBalance(), imagePath, fontPath)
@@ -48,12 +43,11 @@ async def start():
                 os.environ["MONITOR_CONTRACT"],
                 get_monitor_addresses(),60)
     t1 = asyncio.create_task(mc.start())
-    t2 = asyncio.create_task(print(mc))
+    t2 = asyncio.create_task(load_image(mc))
 
     await t1
     await t2
 
 if __name__ == '__main__':
-    load_image()
     asyncio.run(start())
 

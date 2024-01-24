@@ -14,7 +14,7 @@ epd.init()
 
 
 def load_leaderboard(kv: dict, bg_file, font_file):
-    logging.debug("Clearing Image")
+    logging.info("Clearing Image")
     epd.Clear()
     font = ImageFont.truetype(font_file, 24)
     logging.info("Loading Image @ %s", bg_file)

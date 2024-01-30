@@ -16,7 +16,7 @@ epd.init()
 def load_leaderboard(kv: dict, bg_file, font_file):
     logging.info("Clearing Image")
     epd.Clear()
-    font = ImageFont.truetype(font_file, 24)
+    font = ImageFont.truetype(font_file, 16)
     logging.info("Loading Image @ %s", bg_file)
     image = Image.open(bg_file)
     draw = ImageDraw.Draw(image)

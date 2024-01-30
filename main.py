@@ -37,7 +37,7 @@ async def start():
     mc = monitor_contract.MonitorContract(
                 w3conn,
                 os.environ["ERC20_CONTRACT"],
-                os.environ["GAME_CONTRACT"],60)
+                os.environ["GAME_CONTRACT"],180)
 
     t1 = asyncio.create_task(mc.start())
     t2 = asyncio.create_task(load_image(mc))

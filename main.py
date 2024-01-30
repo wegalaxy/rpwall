@@ -26,8 +26,8 @@ async def load_image(mc):
         fontPath = os.path.join(os.environ["FONT_DIR"], 'SourceSans3-Regular.ttf')
         from display import eink_load
         while True:
-            eink_load.load_leaderboard(mc.getAddressBalance(), imagePath, fontPath)
-            await asyncio.sleep(10)
+            eink_load.load_leaderboard(mc.getGameResult(), imagePath, fontPath)
+            await asyncio.sleep(180)
     except RuntimeError as e:
         logging.warning("Error launching eink, skipping for now: {}".format(e))
 

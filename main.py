@@ -20,10 +20,6 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S')
 
 
-def get_monitor_addresses():
-    return urllib.request.urlopen(os.environ["MONITOR_ACCOUNT_PATH"], context=ssl_context).read().decode('utf-8').splitlines()
-
-
 async def load_image(mc):
     try:
         imagePath = os.path.join(os.environ["IMG_DIR"], 'framebg.jpg')
@@ -40,8 +36,9 @@ async def start():
     w3conn = connection.initiate_connection(os.environ["NODE_PROVIDER"])
     mc = monitor_contract.MonitorContract(
                 w3conn,
-                os.environ["MONITOR_CONTRACT"],
-                get_monitor_addresses(),60)
+                os.environ["ERC20_CONTRACT"],
+                os.environ["GAME_CONTRACT"],60)
+
     t1 = asyncio.create_task(mc.start())
     t2 = asyncio.create_task(load_image(mc))
 

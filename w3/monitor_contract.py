@@ -1,59 +1,38 @@
 import asyncio
 
+import w3.abi
 from web3 import Web3
 import logging
 
 from web3.contract import Contract
 
-abi = '''[    {
-        "constant": true,
-        "inputs": [
-            {
-                "name": "_owner",
-                "type": "address"
-            }
-        ],
-        "name": "balanceOf",
-        "outputs": [
-            {
-                "name": "balance",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    }]'''
-
 
 class MonitorContract:
-    _address_balance: dict
-    _contract_address: str
-    _monitor_addresses: []
-    _contract: Contract
+    _game_result: dict
+    _game_contract: Contract
+    _erc_contract: Contract
     _sleep_time: int
     _monitor: bool
 
     def __init__(self,
                  connection: Web3,
-                 contract_address: str,
-                 monitor_addresses: [],
+                 erc_contract_address: str,
+                 game_contract_address: str,
                  sleep_time: int):
-        self._conn = connection
-        self._monitor_addresses = monitor_addresses
-        self._contract_address = contract_address
         self._sleep_time = sleep_time
         self._monitor = True
-        self._address_balance = {}
-        self._contract = self._conn.eth.contract(address=self._contract_address, abi=abi)
+        self._game_result = {}
+        self._game_contract = connection.eth.contract(address=game_contract_address, abi=w3.abi.abi_game_contract)
+        self._erc_contract = connection.eth.contract(address=erc_contract_address, abi=w3.abi.abi_erc20)
 
     async def start(self):
         while self._monitor:
             try:
-                for addr in self._monitor_addresses:
+                currentGameId = self._game_contract.functions.currentGameId().call()
+                for addr in self._game_contract.functions.getGamePlayers(currentGameId).call():
                     logging.info("Accessing balance for addr: {}".format(addr))
-                    balance = self._contract.functions.balanceOf(addr).call()
-                    self._address_balance[addr] = Web3.from_wei(balance, 'ether')
+                    balance = self._erc_contract.functions.balanceOf(addr).call()
+                    self._game_result[addr] = Web3.from_wei(balance, 'ether')
             except Exception as e:
                 logging.error("Error while monitor address: {}".format(e))
             await asyncio.sleep(self._sleep_time)
@@ -61,5 +40,5 @@ class MonitorContract:
     def monitor(self, monitor: bool):
         self._monitor = monitor
 
-    def getAddressBalance(self):
-        return self._address_balance
+    def getGameResult(self):
+        return self._game_result

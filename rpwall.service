@@ -1,0 +1,10 @@
+[Unit]
+Description=Wall Game
+After=network.target
+
+[Service]
+User=pi
+ExecStart=/bin/bash /home/pi/rpwall/start.sh
+
+[Install]
+WantedBy=default.target

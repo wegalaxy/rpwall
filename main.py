@@ -1,6 +1,6 @@
 import asyncio
 
-from PIL import Image
+from display import view
 from dotenv import load_dotenv
 import logging
 
@@ -22,11 +22,19 @@ logging.basicConfig(
 
 async def load_image(mc):
     try:
-        imagePath = os.path.join(os.environ["IMG_DIR"], 'framebg.jpg')
+        imagePath = os.path.join(os.environ["IMG_DIR"], 'db1.jpg')
         fontPath = os.path.join(os.environ["FONT_DIR"], 'SourceSans3-Regular.ttf')
-        from display import eink_load
+        vc = view.ViewController(imagePath, fontPath)
         while True:
-            eink_load.load_leaderboard(mc.getGameResult(), imagePath, fontPath)
+            vc.clear_image()
+            vc.add_player("100")
+            vc.add_guess_game("40")
+            vc.add_jackpot("500000")
+            vc.add_reference("534534")
+            vc.add_game_id("1004")
+            vc.add_node_ip("1.1.1.1")
+            vc.add_refresh_time("now")
+            vc.load_image()
             await asyncio.sleep(180)
     except RuntimeError as e:
         logging.warning("Error launching eink, skipping for now: {}".format(e))

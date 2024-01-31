@@ -6,17 +6,21 @@
 sudo raspi-config
 Choose Interface Options -> SPI -> Yes Enable SPI interface
 
-sudo ./install.sh
-
 sudo reboot
 ```
 
 ####
-pip install RPi.GPIO
-pip install gpiozero
+```
+python -m venv ./venv
+source ./venv/bin/activate
 
+pip install -r requirements.txt
+
+pip install RPi.GPIO gpiozero spidev lgpio Jetson.GPIO
+
+```
 #### Run Demo
 ```
-python3 main.py
+python main.py
 ```
 

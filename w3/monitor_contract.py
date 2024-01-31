@@ -41,7 +41,7 @@ class MonitorContract:
                 c.guesses = 0
                 c.players = 0
                 for addr in self._game_contract.functions.getGamePlayers(c.gameId).call():
-                    c.guesses = c.guesses + self._game_contract.functions.getGameNumberGuesses(c.gameId, addr).call()
+                    c.guesses = c.guesses + self._game_contract.functions.getGamePlayerGuesses(c.gameId, addr).call()
                     c.players = c.players + 1
                     logging.info("Accessing balance for addr: {}".format(addr))
                     balance = self._erc_contract.functions.balanceOf(addr).call()

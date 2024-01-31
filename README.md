@@ -11,6 +11,12 @@ sudo reboot
 
 ####
 ```
+
+sudo cp rpwall.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable rpwall.service
+sudo systemctl start rpwall.service
+
 python -m venv ./venv
 source ./venv/bin/activate
 

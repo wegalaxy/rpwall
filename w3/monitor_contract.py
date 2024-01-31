@@ -7,8 +7,15 @@ import logging
 from web3.contract import Contract
 
 
+class ContractResult:
+    gameId: int
+    guesses: int
+    players: int
+    game_result: dict
+
+
 class MonitorContract:
-    _game_result: dict
+    _game_result: ContractResult
     _game_contract: Contract
     _erc_contract: Contract
     _sleep_time: int
@@ -21,18 +28,24 @@ class MonitorContract:
                  sleep_time: int):
         self._sleep_time = sleep_time
         self._monitor = True
-        self._game_result = {}
+        self._game_result = ContractResult()
         self._game_contract = connection.eth.contract(address=game_contract_address, abi=w3.abi.abi_game_contract)
         self._erc_contract = connection.eth.contract(address=erc_contract_address, abi=w3.abi.abi_erc20)
 
     async def start(self):
         while self._monitor:
             try:
-                currentGameId = self._game_contract.functions.currentGameId().call()
-                for addr in self._game_contract.functions.getGamePlayers(currentGameId).call():
+                c = ContractResult()
+                self._game_result = c
+                c.gameId = self._game_contract.functions.currentGameId().call()
+                c.guesses = 0
+                c.players = 0
+                for addr in self._game_contract.functions.getGamePlayers(c.gameId).call():
+                    c.guesses = c.guesses + self._game_contract.functions.getGameNumberGuesses(c.gameId, addr).call()
+                    c.players = c.players + 1
                     logging.info("Accessing balance for addr: {}".format(addr))
                     balance = self._erc_contract.functions.balanceOf(addr).call()
-                    self._game_result[addr] = Web3.from_wei(balance, 'ether')
+                    c.game_result[addr] = Web3.from_wei(balance, 'ether')
             except Exception as e:
                 logging.error("Error while monitor address: {}".format(e))
             await asyncio.sleep(self._sleep_time)
@@ -40,5 +53,5 @@ class MonitorContract:
     def monitor(self, monitor: bool):
         self._monitor = monitor
 
-    def getGameResult(self):
+    def get_game_result(self):
         return self._game_result

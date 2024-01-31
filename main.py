@@ -4,6 +4,10 @@ from display import view
 from dotenv import load_dotenv
 import logging
 
+from datetime import datetime
+
+now = datetime.now() # current date and time
+
 from w3 import connection, monitor_contract
 import os
 import urllib.request
@@ -19,21 +23,34 @@ logging.basicConfig(
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
 
+import socket
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
 
 async def load_image(mc):
     try:
-        imagePath = os.path.join(os.environ["IMG_DIR"], 'db1.jpg')
+        imagePath = os.path.join(os.environ["IMG_DIR"], 'db1.gif')
         fontPath = os.path.join(os.environ["FONT_DIR"], 'SourceSans3-Regular.ttf')
         vc = view.ViewController(imagePath, fontPath)
+        rez = mc.get_game_result()
         while True:
             vc.clear_image()
-            vc.add_player("100")
-            vc.add_guess_game("40")
-            vc.add_jackpot("500000")
-            vc.add_reference("534534")
-            vc.add_game_id("1004")
-            vc.add_node_ip("1.1.1.1")
-            vc.add_refresh_time("now")
+            vc.add_player(str(rez.players))
+            vc.add_guess_game(str(rez.guesses))
+            vc.add_jackpot("????")
+            vc.add_reference("????")
+            vc.add_game_id(str(rez.gameId))
+            vc.add_node_ip(get_ip())
+            vc.add_refresh_time(now.strftime("%b %d  %H:%M"))
             vc.load_image()
             await asyncio.sleep(180)
     except RuntimeError as e:

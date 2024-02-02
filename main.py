@@ -2,9 +2,10 @@ import asyncio
 
 from display import view
 from dotenv import load_dotenv
+from forex_python.converter import CurrencyRates
 import logging
 
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 now = datetime.now() # current date and time
 
@@ -44,13 +45,23 @@ async def load_image(mc):
         rez = mc.get_game_result()
         while True:
             vc.clear_image()
-            vc.add_player(str(rez.players))
-            vc.add_guess_game(str(rez.guesses))
-            vc.add_jackpot(str(rez.jackpot))
-            vc.add_reference("????")
-            vc.add_game_id(str(rez.gameId))
-            vc.add_node_ip(get_ip())
-            vc.add_refresh_time(now.strftime("%b %d  %H:%M"))
+        #    vc.add_player_now(str(rez.players))
+        #    vc.add_guess_game_now(str(rez.guesses))
+        #    vc.add_jackpot_now(str(rez.jackpot))
+
+            vc.add_player(str(100))
+            vc.add_guess_game(str(100))
+            vc.add_jackpot(str(100000))
+
+            vc.add_player_last("Last: "+str(100) + "  Total: "+str(100))
+            vc.add_guess_game_last("Last: "+str(100))
+            vc.add_jackpot_last("Last: "+str(100000))
+
+            yesterday = date.today() - timedelta(days = 1)
+
+            vc.add_reference("%.9f" % (CurrencyRates().get_rates('JPY', yesterday)['HKD']))
+            vc.add_reference_last("Ref: "+yesterday.strftime("%b %d"))
+            vc.add_bottom("Current Game Id: "+str(rez.gameId) +"     IP: "+get_ip()+"      "+now.strftime("%b %d  %H:%M"))
             vc.load_image()
             await asyncio.sleep(180)
     except RuntimeError as e:

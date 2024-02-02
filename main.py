@@ -42,20 +42,17 @@ async def load_image(mc):
         imagePath = os.path.join(os.environ["IMG_DIR"], 'db1.gif')
         fontPath = os.path.join(os.environ["FONT_DIR"], 'SourceSans3-Regular.ttf')
         vc = view.ViewController(imagePath, fontPath)
+        prev_rez = mc.get_prev_game_result()
         rez = mc.get_game_result()
         while True:
             vc.clear_image()
-        #    vc.add_player_now(str(rez.players))
-        #    vc.add_guess_game_now(str(rez.guesses))
-        #    vc.add_jackpot_now(str(rez.jackpot))
+            vc.add_player(str(rez.players))
+            vc.add_guess_game(str(rez.guesses))
+            vc.add_jackpot(str(rez.jackpot))
 
-            vc.add_player(str(100))
-            vc.add_guess_game(str(100))
-            vc.add_jackpot(str(100000))
-
-            vc.add_player_last("Last: "+str(100) + "  Total: "+str(100))
-            vc.add_guess_game_last("Last: "+str(100))
-            vc.add_jackpot_last("Last: "+str(100000))
+            vc.add_player_last("Last: "+str(prev_rez.players))
+            vc.add_guess_game_last("Last: "+str(prev_rez.guesses))
+            vc.add_jackpot_last("Last: "+str(prev_rez.jackpot))
 
             yesterday = date.today() - timedelta(days = 1)
 

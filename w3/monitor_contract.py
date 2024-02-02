@@ -12,6 +12,7 @@ class ContractResult:
     guesses: int
     players: int
     game_result: dict
+    jackpot: int
 
 
 class MonitorContract:
@@ -37,9 +38,11 @@ class MonitorContract:
             try:
                 c = ContractResult()
                 self._game_result = c
-                c.gameId = self._game_contract.functions.currentGameId().call()
-                c.guesses = len(self._game_contract.functions.getRates(c.gameId).call())
+                c.gameId = 1005#self._game_contract.functions.currentGameId().call()
+                game_rez = self._game_contract.functions.games(c.gameId).call()
+                c.guesses = game_rez[9]
                 c.players = self._game_contract.functions.getPlayerCount(c.gameId).call()
+                c.jackpot = Web3.from_wei(game_rez[6], 'ether')
                 '''
                     for addr in self._game_contract.functions.getPlayers(c.gameId).call():
                     logging.info("Accessing balance for addr: {}".format(addr))

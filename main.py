@@ -46,7 +46,7 @@ async def load_image(mc):
             vc.clear_image()
             vc.add_player(str(rez.players))
             vc.add_guess_game(str(rez.guesses))
-            vc.add_jackpot("????")
+            vc.add_jackpot(str(rez.jackpot))
             vc.add_reference("????")
             vc.add_game_id(str(rez.gameId))
             vc.add_node_ip(get_ip())

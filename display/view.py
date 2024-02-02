@@ -49,7 +49,7 @@ class ViewController:
                 logging.debug("Loading Image to Display")
                 self._epd.display(buff)
             else:
-                self._image.show()
+                self._image.convert('RGB').show()
         except RuntimeError as e:
             logging.warning("Error launching eink, skipping for now: {}".format(e))
             self._image.show()

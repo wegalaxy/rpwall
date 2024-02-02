@@ -38,14 +38,14 @@ class MonitorContract:
                 c = ContractResult()
                 self._game_result = c
                 c.gameId = self._game_contract.functions.currentGameId().call()
-                c.guesses = 0
-                c.players = 0
-                for addr in self._game_contract.functions.getGamePlayers(c.gameId).call():
-                    c.guesses = c.guesses + self._game_contract.functions.getGamePlayerGuesses(c.gameId, addr).call()
-                    c.players = c.players + 1
+                c.guesses = len(self._game_contract.functions.getRates(c.gameId).call())
+                c.players = self._game_contract.functions.getPlayerCount(c.gameId).call()
+                '''
+                    for addr in self._game_contract.functions.getPlayers(c.gameId).call():
                     logging.info("Accessing balance for addr: {}".format(addr))
                     balance = self._erc_contract.functions.balanceOf(addr).call()
                     c.game_result[addr] = Web3.from_wei(balance, 'ether')
+                '''
             except Exception as e:
                 logging.error("Error while monitor address: {}".format(e))
             await asyncio.sleep(self._sleep_time)

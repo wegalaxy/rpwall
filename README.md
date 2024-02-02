@@ -12,11 +12,6 @@ sudo reboot
 ####
 ```
 
-sudo cp rpwall.service /etc/systemd/system
-sudo systemctl daemon-reload
-sudo systemctl enable rpwall.service
-sudo systemctl start rpwall.service
-
 python -m venv ./venv
 source ./venv/bin/activate
 
@@ -27,9 +22,20 @@ pip install RPi.GPIO gpiozero spidev lgpio Jetson.GPIO
 ```
 #### Run Demo
 ```
+#modify .env
+cp .env.template .env
 python main.py
 ```
 
+#### System Job
+```
+sudo cp rpwall.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable rpwall.service
+sudo systemctl start rpwall.service
+sudo systemctl status rpwall.service
+
+```
 
 #### For Testing Image
 ```

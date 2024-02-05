@@ -7,8 +7,6 @@ import logging
 
 from datetime import datetime, date, timedelta
 
-now = datetime.now() # current date and time
-
 from w3 import connection, monitor_contract
 import os
 import urllib.request
@@ -45,6 +43,7 @@ async def load_image(mc):
         prev_rez = mc.get_prev_game_result()
         rez = mc.get_game_result()
         while True:
+            now = datetime.now() # current date and time
             vc.clear_image()
             vc.add_player(str(rez.players))
             vc.add_guess_game(str(rez.guesses))

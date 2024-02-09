@@ -26,7 +26,7 @@ class ViewController:
         self._font26 = ImageFont.truetype(font_file, 26)
         self._font40 = ImageFont.truetype(font_file, 40)
         self._font16 = ImageFont.truetype(font_file, 16)
-        self._font12 = ImageFont.truetype(font_file, 12)
+        self._font14 = ImageFont.truetype(font_file, 14)
 
         try:
             from display.waveshare_epd import epd7in3f
@@ -39,11 +39,11 @@ class ViewController:
         logging.info("Clearing Image")
         self._image = Image.open(self._bg_file)
         self._drawing = ImageDraw.Draw(self._image)
-        try:
-            if hasattr(self, '_epd'):
-                self._epd.Clear()
-        except RuntimeError as e:
-            logging.warning("Error launching eink, skipping for now: {}".format(e))
+        #try:
+        #    if hasattr(self, '_epd'):
+        #        self._epd.Clear()
+        #except RuntimeError as e:
+        #    logging.warning("Error launching eink, skipping for now: {}".format(e))
 
     def load_image(self):
         logging.info("Loading Image")
@@ -71,8 +71,12 @@ class ViewController:
         self._drawing.text((center_x - w / 2, center_y - h / 2), message, font=self._font16, fill=(7, 138, 28, 255))
 
     def add_text_small(self, message, center_x, center_y):
-        _, _, w, h = self._drawing.textbbox((0, 0), message, font=self._font12)
-        self._drawing.text((center_x - w / 2, center_y - h / 2), message, font=self._font12, fill=(7, 138, 28, 255))
+        _, _, w, h = self._drawing.textbbox((0, 0), message, font=self._font14)
+        self._drawing.text((center_x - w / 2, center_y - h / 2), message, font=self._font14, fill=(7, 138, 28, 255))
+
+    def add_text_small_left(self, message, x, y):
+        self._drawing.text((x ,y), message, font=self._font14, fill=(7, 138, 28, 255))
+
 
     def add_player(self, joined):
         self.add_text_xlarge(joined, 100, 145)
@@ -87,16 +91,19 @@ class ViewController:
         self.add_text_small(guesses, 300, 210)
 
     def add_jackpot(self, pool):
-        self.add_text_xlarge(pool, 500, 145)
+        self.add_text_xlarge(pool, 100, 330)
 
     def add_jackpot_last(self, pool):
-        self.add_text_small(pool, 500, 210)
+        self.add_text_small(pool, 100, 395)
 
     def add_reference(self, reference):
-        self.add_text_large(reference, 700, 145)
+        self.add_text_large(reference, 300, 330)
 
     def add_reference_last(self, reference):
-        self.add_text_small(reference, 700, 210)
+        self.add_text_small(reference, 300, 395)
 
     def add_bottom(self, text):
         self.add_text_small(text, 400, 470)
+
+    def add_transaction(self, text):
+        self.add_text_small_left(text, 420, 145)

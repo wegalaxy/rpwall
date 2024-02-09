@@ -13,6 +13,7 @@ class ContractResult:
     players: int
     game_result: dict
     jackpot: int
+    players_bid_count: dict
 
 
 class MonitorContract:
@@ -40,12 +41,10 @@ class MonitorContract:
                 gameId = self._game_contract.functions.currentGameId().call()
                 self._game_result = self._getContractResult(gameId)
                 self._prev_game_result = self._getContractResult(gameId-1)
-                '''
-                    for addr in self._game_contract.functions.getPlayers(c.gameId).call():
-                    logging.info("Accessing balance for addr: {}".format(addr))
-                    balance = self._erc_contract.functions.balanceOf(addr).call()
-                    c.game_result[addr] = Web3.from_wei(balance, 'ether')
-                '''
+
+                for addr in self._game_contract.functions.getPlayers(gameId).call():
+                    self._game_result.players_bid_count[addr] = len(self._game_contract.functions.getRatesByPlayer(gameId, addr).call())
+
             except Exception as e:
                 logging.error("Error while monitor address: {}".format(e))
             await asyncio.sleep(self._sleep_time)
@@ -57,6 +56,7 @@ class MonitorContract:
         c.guesses = game_rez[9]
         c.players = self._game_contract.functions.getPlayerCount(c.gameId).call()
         c.jackpot = Web3.from_wei(game_rez[6], 'ether')
+        c.players_bid_count = {}
         return c
     def monitor(self, monitor: bool):
         self._monitor = monitor

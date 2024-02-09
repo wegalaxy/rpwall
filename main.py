@@ -53,6 +53,12 @@ async def load_image(mc):
             vc.add_guess_game_last("Last: "+str(prev_rez.guesses))
             vc.add_jackpot_last("Last: "+str(prev_rez.jackpot))
 
+            transactions = ""
+            for key, value in sorted(rez.players_bid_count.items(), key=lambda item: item[1], reverse=True):
+                transactions = transactions + str(value) + " bids: " + key + '\n'
+
+            vc.add_transaction(transactions)
+
             yesterday = date.today() - timedelta(days = 1)
 
             vc.add_reference("%.9f" % (CurrencyRates().get_rates('JPY', yesterday)['HKD']))

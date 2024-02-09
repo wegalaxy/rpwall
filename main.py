@@ -65,7 +65,7 @@ async def load_image(mc):
             vc.add_reference_last("Ref: "+yesterday.strftime("%b %d"))
             vc.add_bottom("Current Game Id: "+str(rez.gameId) +"     IP: "+get_ip()+"      "+now.strftime("%b %d  %H:%M"))
             vc.load_image()
-            await asyncio.sleep(180)
+            await asyncio.sleep(1000)
     except RuntimeError as e:
         logging.warning("Error launching eink, skipping for now: {}".format(e))
 

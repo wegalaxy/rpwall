@@ -39,11 +39,11 @@ class ViewController:
         logging.info("Clearing Image")
         self._image = Image.open(self._bg_file)
         self._drawing = ImageDraw.Draw(self._image)
-        #try:
-        #    if hasattr(self, '_epd'):
-        #        self._epd.Clear()
-        #except RuntimeError as e:
-        #    logging.warning("Error launching eink, skipping for now: {}".format(e))
+        try:
+            if hasattr(self, '_epd'):
+                self._epd.Clear()
+        except RuntimeError as e:
+            logging.warning("Error launching eink, skipping for now: {}".format(e))
 
     def load_image(self):
         logging.info("Loading Image")
